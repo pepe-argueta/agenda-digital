@@ -1,0 +1,6 @@
+{
+  "name": "agenda-digital",
+  "short_name": "agenda-digital",
+  "start_url": "/",
+  "display": "standalone"
+}

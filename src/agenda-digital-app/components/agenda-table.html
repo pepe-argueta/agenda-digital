@@ -1,0 +1,62 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="agenda-table">
+    <template>
+        <custom-style>
+            <style is="custom-style">
+            </style>
+        </custom-style>
+        <h2>Lista de Contactos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Contacto</th>
+                    <th>Tel. Personal</th>
+                    <th>Email Personal</th>
+                    <th>Tel. Oficina</th>
+                    <th>Email Oficina</th>
+                    <th>Fecha Nacimiento</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template is="dom-repeat" items="{{dataTableContacts}}" as="item">
+                    <tr>
+                        <td>[[item.nombre_contacto]]</td>
+                        <td>[[item.telefono_personal]]</td>
+                        <td>[[item.correo_personal]]</td>
+                        <td>[[item.telefono_oficina]]</td>
+                        <td>[[item.correo_oficina]]</td>
+                        <td>[[item.fecha_nacimiento]]</td>
+                        <td>
+                            <paper-button raised id$="[[item.id]]" event-edit="edit" on-click="edit">Editar</paper-button>
+                        </td>
+                        <td>
+                            <paper-button raised id$="[[item.id]]" on-click="delete">Eliminar</paper-button>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+    <script>
+        class AgendaTable extends Polymer.Element {
+            static get is() {
+                return 'agenda-table';
+            }
+
+            edit(e) {
+                //console.log(e.target.id);
+                const id = e.target.id;
+                this.dispatchEvent(new CustomEvent('edit-event', {
+                    detail: id,
+                    bubbles: true,
+                    composed: true
+                }));
+            }
+        }
+        window.customElements.define(AgendaTable.is, AgendaTable);
+    </script>
+
+</dom-module>

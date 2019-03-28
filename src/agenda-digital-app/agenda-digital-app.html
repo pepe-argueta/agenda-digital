@@ -1,0 +1,100 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+
+<link rel="import" href="components/agenda-form.html">
+<link rel="import" href="components/agenda-table.html">
+
+<dom-module id="agenda-digital-app">
+  <template>
+    <custom-style>
+      <style is="custom-style">
+        .flex {
+          @apply --layout-horizontal;
+        }
+
+        paper-button.green {
+          background-color: var(--paper-green-500);
+          color: white;
+        }
+
+        paper-button.green:hover {
+          background-color: white;
+          color: var(--paper-green-500);
+          border: solid 1px var(--paper-green-500);
+        }
+      </style>
+    </custom-style>
+
+    <iron-ajax id="getAllContacts" auto url="https://agenda-digital-ids.herokuapp.com/api/contactos/" method="GET" handle-as="json"
+      content-type="application/json" last-response="{{responseGetAll}}">
+    </iron-ajax>
+
+    <iron-ajax id="getDetailByIdContact" auto url="https://agenda-digital-ids.herokuapp.com/api/contactos/{{idContact}}" method="GET" handle-as="json"
+      content-type="application/json" last-response="{{responseGetContactById}}">
+    </iron-ajax>
+
+    <div class="container flex">
+      <h1>[[prop1]]</h1>
+    </div>
+    <div class="container">
+      <div class="box">
+        <paper-button class="green" raised on-click="newContact">Nuevo</paper-button>
+        <agenda-table data-table-contacts="{{responseGetAll}}" on-edit-event="getDetailByIdContact"></agenda-table>
+      </div>
+      <div class="box">
+        <agenda-form type-form="{{typeFormApp}}" data-form="{{responseGetContactById}}"></agenda-form>
+      </div>
+    </div>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class AgendaDigitalApp extends Polymer.Element {
+      static get is() {
+        return 'agenda-digital-app';
+      }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'Agenda Digital'
+          },
+          typeFormApp: {
+            type: String,
+            value: 'Nuevo'
+          },
+          responseGetAll: {
+            type: Array,
+          },
+          responseGetContactById: {
+            type: Array,
+            notify: true
+          },
+          idContact: {
+            type: Number,
+          }
+        };
+      }
+
+      newContact() {
+        this.typeFormApp = 'Nuevo';
+        this.responseGetContactById = [];
+      }
+
+      getDetailByIdContact(e) {
+        this.typeFormApp = 'Editar';
+        this.idContact = e.detail;
+        this.$.getDetailByIdContact.generateRequest();
+      }
+    }
+
+    window.customElements.define(AgendaDigitalApp.is, AgendaDigitalApp);
+  </script>
+</dom-module>

@@ -1,0 +1,148 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="agenda-form">
+    <template>
+        <custom-style>
+            <style is="custom-style">
+                .flex {
+                    @apply --layout-horizontal;
+                }
+
+                .flex-button {
+                    @apply --layout-horizontal;
+                    margin-top: 20px;
+                }
+
+                .box {
+                    width: 50%;
+                    margin-right: 20px;
+                }
+
+                paper-button.blue {
+                    background-color: var(--paper-blue-500);
+                    color: white;
+                }
+
+                paper-button.blue:hover {
+                    background-color: white;
+                    color: var(--paper-blue-500);
+                    border: solid 1px var(--paper-blue-500);
+                }
+
+                paper-button.orange {
+                    background-color: var(--paper-orange-500);
+                    color: white;
+                }
+
+                paper-button.orange:hover {
+                    background-color: white;
+                    color: var(--paper-orange-500);
+                    border: solid 1px var(--paper-orange-500);
+                }
+            </style>
+        </custom-style>
+        <h3 type-form="[[typeForm]]">[[typeForm]] Contacto</h3>
+        <form id="form">
+            <div class="container flex">
+                <div class="box">
+                    <paper-input type="text" value="{{nombreContacto}}" label="Contacto" required></paper-input>
+                    <paper-input type="text" value="[[telefonoOficina]]" label="Telefono Oficina" required>
+                    </paper-input>
+                    <paper-input type="text" value="[[telefonoPersonal]]" label="Telefono Personal" required>
+                    </paper-input>
+                </div>
+                <div class="box">
+                    <paper-input type="text" value="[[correoOficina]]" label="Correo Oficina" required></paper-input>
+                    <paper-input type="text" value="[[correoPersonal]]" label="Correo Personal" required></paper-input>
+                    <paper-input type="date" value="[[fechaNacimiento]]" label="Fecha Nacimiento" required>
+                    </paper-input>
+                </div>
+            </div>
+            <div class="container flex-button">
+                <paper-button class$="[[colorButton]]" raised on-click="saveContact">[[nameButton]]</paper-button>
+            </div>
+        </form>
+
+    </template>
+    <script>
+        class AgendaForm extends Polymer.Element {
+            static get is() {
+                return 'agenda-form';
+            }
+
+            static get properties() {
+                return {
+                    typeForm: {
+                        type: String,
+                        observer: '_getNameButton'
+                    },
+                    nameButton: {
+                        type: String,
+                    },
+                    colorButton: {
+                        type: String,
+                    },
+                    dataForm: {
+                        type: Array,
+                        observer: '_getDataContactById'
+                    },
+                    nombreContacto: {
+                        type: String,
+                    },
+                    telefonoOficina: {
+                        type: String
+                    },
+                    telefonoPersonal: {
+                        type: String
+                    },
+                    correoOficina: {
+                        type: String
+                    },
+                    correoPersonal: {
+                        type: String
+                    },
+                    fechaNacimiento: {
+                        type: String
+                    }
+                }
+            }
+
+            saveContact() {
+                console.log("Desde Save Contact");
+            }
+
+            _getNameButton() {
+                if (this.typeForm == 'Editar') {
+                    this.nameButton = 'Actualizar';
+                    this.colorButton = 'orange';
+                } else if (this.typeForm == 'Nuevo') {
+                    this.nameButton = 'Guardar';
+                    this.colorButton = 'blue';
+                }
+            }
+
+            _getDataContactById() {
+
+                if (this.typeForm == 'Editar') {
+                    this.nombreContacto = this.dataForm.nombre_contacto;
+                    this.telefonoOficina = this.dataForm.telefono_oficina;
+                    this.telefonoPersonal = this.dataForm.telefono_personal;
+                    this.correoOficina = this.dataForm.correo_oficina;
+                    this.correoPersonal = this.dataForm.correo_personal;
+                    this.fechaNacimiento = this.dataForm.fecha_nacimiento;
+                } else if (this.typeForm == 'Nuevo') {
+                    this.nombreContacto = '';
+                    this.telefonoOficina = '';
+                    this.telefonoPersonal = '';
+                    this.correoOficina = '';
+                    this.correoPersonal = '';
+                    this.fechaNacimiento = '';
+                }
+            }
+        }
+        window.customElements.define(AgendaForm.is, AgendaForm);
+    </script>
+</dom-module>

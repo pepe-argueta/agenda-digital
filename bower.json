@@ -1,0 +1,14 @@
+{
+  "name": "agenda-digital",
+  "main": "index.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "iron-flex-layout": "@polymer/iron-flex-layout#^2.0.0",
+    "paper-input": "@polymer/paper-input#^2.0.0",
+    "paper-button": "@polymer/paper-button#^2.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  }
+}
